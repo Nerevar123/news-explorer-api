@@ -4,6 +4,6 @@ const { validateArticleBody, validateObjectId } = require('../middlewares/valida
 
 router.get('/', getArticles);
 router.post('/', validateArticleBody, saveArticle);
-router.delete('/:articleId', validateObjectId, deleteArticle);
+router.delete('/:id', validateObjectId, deleteArticle);
 
 module.exports = router;

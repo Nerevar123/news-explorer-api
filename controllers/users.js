@@ -1,14 +1,13 @@
-const {
-  NODE_ENV, JWT_SECRET, COOKIES_SECURE, COOKIES_SAMESITE,
-} = process.env;
 const jwt = require('jsonwebtoken');
 const yn = require('yn');
 const User = require('../models/user');
-const { cryptHash } = require('../utils/errors');
+const { cryptHash } = require('../utils/crypt');
+const NotFoundError = require('../errors/not-found-error');
+const { JWT_SECRET, COOKIES_SECURE, COOKIES_SAMESITE } = require('../config');
 
 module.exports.getUserInfo = (req, res, next) => {
   User.findById(req.user)
-    .orFail(new Error('userNotFound'))
+    .orFail(new NotFoundError('Пользователь не найден'))
     .then((user) => res.send(user))
     .catch(next);
 };
@@ -24,7 +23,7 @@ module.exports.register = (req, res, next) => {
         .then((hash) => User.create({
           name, about, avatar, email, password: hash,
         }))
-        .then(() => res.status(201).send())
+        .then(() => res.status(201).send({ message: 'Вы успешно зарегистрированы' }))
         .catch(next);
     });
 };
@@ -34,14 +33,14 @@ module.exports.login = (req, res, next) => {
 
   return User.findUserByCredentials(email, password)
     .then((user) => {
-      const token = jwt.sign({ _id: user._id }, NODE_ENV === 'production' ? JWT_SECRET : 'dev-secret', { expiresIn: '7d' });
+      const token = jwt.sign({ _id: user._id }, JWT_SECRET, { expiresIn: '7d' });
       res.cookie('jwt', token, {
         maxAge: 3600000 * 24 * 7,
         sameSite: COOKIES_SAMESITE,
         secure: yn(COOKIES_SECURE),
         httpOnly: yn(COOKIES_SECURE),
       });
-      res.send({ jwt: token });
+      res.send({ message: 'Вы успешно вошли в аккаунт' });
     })
     .catch(next);
 };
@@ -53,19 +52,7 @@ module.exports.logout = (req, res, next) => {
       secure: yn(COOKIES_SECURE),
       httpOnly: yn(COOKIES_SECURE),
     });
-    res.send({ message: 'Logout Successful' });
-  } catch (err) {
-    next(err);
-  }
-};
-
-// TODO Объединить с auth?
-module.exports.checkCookies = (req, res, next) => {
-  const token = req.cookies.jwt;
-  if (!token) throw new Error('JsonWebTokenError');
-  try {
-    jwt.verify(token, NODE_ENV === 'production' ? JWT_SECRET : 'dev-secret');
-    res.send({ jwt: token });
+    res.send({ message: 'Вы успешно вышли из аккаунта' });
   } catch (err) {
     next(err);
   }

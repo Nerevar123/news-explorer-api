@@ -8,11 +8,12 @@ const rateLimit = require('express-rate-limit');
 const cookieParser = require('cookie-parser');
 const { errors } = require('celebrate');
 
-const { checkError } = require('./utils/errors');
+const errorHandler = require('./middlewares/errorHandler');
 const routes = require('./routes');
 const { requestLogger, errorLogger } = require('./middlewares/logger');
-
-const { PORT = 3000, MONGO_URL = 'mongodb://localhost:27017/stoneflower' } = process.env;
+const {
+  PORT, MONGO_URL, rateLimitConfig, corsConfig,
+} = require('./config');
 
 const app = express();
 
@@ -23,15 +24,9 @@ mongoose.connect(MONGO_URL, {
   useUnifiedTopology: true,
 });
 
-const limiter = rateLimit({
-  windowMs: 15 * 60 * 1000,
-  max: 100,
-});
+const limiter = rateLimit(rateLimitConfig);
 
-app.use(cors({
-  origin: ['https://ner.students.nomoreparties.space', 'http://ner.students.nomoreparties.space', 'http://localhost:3000', 'http://127.0.0.1:3000'],
-  credentials: true,
-}));
+app.use(cors(corsConfig));
 
 app.use(requestLogger);
 app.use(limiter);
@@ -44,6 +39,6 @@ app.use(routes);
 
 app.use(errorLogger);
 app.use(errors());
-app.use((err, req, res, next) => checkError(err, res, next));
+app.use(errorHandler);
 
 app.listen(PORT);

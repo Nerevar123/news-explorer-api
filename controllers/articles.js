@@ -1,4 +1,6 @@
 const Article = require('../models/article');
+const NotFoundError = require('../errors/not-found-error');
+const ForbiddenError = require('../errors/forbidden-error');
 
 module.exports.getArticles = (req, res, next) => {
   Article.find({})
@@ -19,16 +21,14 @@ module.exports.saveArticle = (req, res, next) => {
 };
 
 module.exports.deleteArticle = (req, res, next) => {
-  Article.findById(req.params.articleId)
-  // notFoundError
-    .orFail(new Error('cardNotFound'))
+  Article.findById(req.params.id).select('+owner')
+    .orFail(new NotFoundError('Запрашиваемая статья не найдена'))
     .then((data) => {
       // eslint-disable-next-line eqeqeq
       if (data.owner != req.user._id) {
-        // next? ForbError
-        throw new Error('forbidden');
+        throw new ForbiddenError('Недостаточно прав для совершения операции');
       }
-      Article.findByIdAndRemove(req.params.articleId)
+      Article.findByIdAndRemove(req.params.id)
         .then((article) => res.send(article));
     })
     .catch(next);
