@@ -12,7 +12,7 @@ const rateLimitConfig = {
 };
 
 const corsConfig = {
-  origin: ['https://ner.students.nomoreparties.xyz', 'http://ner.students.nomoreparties.xyz', 'http://localhost:3000', 'http://127.0.0.1:3000'],
+  origin: ['https://news.ner.works', 'http://news.ner.works', 'http://localhost:3000', 'http://127.0.0.1:3000'],
   credentials: true,
 };
 
