@@ -11,9 +11,8 @@
 
 **Ссылка на API**
 
-https://api.ner.students.nomoreparties.xyz/
+https://api.mesto.ner.works/
 
-IP: 84.201.158.178
 
 **Change-log**
 

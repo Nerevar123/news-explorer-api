@@ -4,10 +4,13 @@ const User = require('../models/user');
 const { cryptHash } = require('../utils/crypt');
 const NotFoundError = require('../errors/not-found-error');
 const { JWT_SECRET, COOKIES_SECURE, COOKIES_SAMESITE } = require('../config');
+const {
+  notFoundUserErrorMessage, registrationOkMessage, loginOkMessage, logoutOkMessage,
+} = require('../utils/constants');
 
 module.exports.getUserInfo = (req, res, next) => {
   User.findById(req.user)
-    .orFail(new NotFoundError('Пользователь не найден'))
+    .orFail(new NotFoundError(notFoundUserErrorMessage))
     .then((user) => res.send(user))
     .catch(next);
 };
@@ -23,7 +26,7 @@ module.exports.register = (req, res, next) => {
         .then((hash) => User.create({
           name, about, avatar, email, password: hash,
         }))
-        .then(() => res.status(201).send({ message: 'Вы успешно зарегистрированы' }))
+        .then(() => res.status(201).send({ message: registrationOkMessage }))
         .catch(next);
     });
 };
@@ -40,7 +43,7 @@ module.exports.login = (req, res, next) => {
         secure: yn(COOKIES_SECURE),
         httpOnly: yn(COOKIES_SECURE),
       });
-      res.send({ message: 'Вы успешно вошли в аккаунт' });
+      res.send({ message: loginOkMessage });
     })
     .catch(next);
 };
@@ -52,7 +55,7 @@ module.exports.logout = (req, res, next) => {
       secure: yn(COOKIES_SECURE),
       httpOnly: yn(COOKIES_SECURE),
     });
-    res.send({ message: 'Вы успешно вышли из аккаунта' });
+    res.send({ message: logoutOkMessage });
   } catch (err) {
     next(err);
   }

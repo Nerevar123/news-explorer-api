@@ -1,5 +1,5 @@
 const {
-  PORT = 3001,
+  PORT = 3000,
   JWT_SECRET = 'JWT_SECRET',
   MONGO_URL = 'mongodb://localhost:27017/stoneflower',
   COOKIES_SECURE = false,

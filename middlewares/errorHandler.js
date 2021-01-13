@@ -1,3 +1,5 @@
+const { duplicateErrorMessage, serverErrorMessage } = require('../utils/constants');
+
 module.exports = ((err, req, res, next) => {
   const { statusCode = 500, message } = err;
 
@@ -7,15 +9,11 @@ module.exports = ((err, req, res, next) => {
   }
 
   if (err.name === 'MongoError' && err.code === 11000) {
-    res.status(409).send({ message: 'Введенный вами адрес электронной почты уже зарегистрирован' });
+    res.status(409).send({ message: duplicateErrorMessage });
     return;
   }
 
-  res.status(statusCode).send({
-    message: statusCode === 500
-      ? 'На сервере произошла ошибка'
-      : message,
-  });
+  res.status(statusCode).send({ message: statusCode === 500 ? serverErrorMessage : message });
 
   next();
 });
