@@ -9,6 +9,7 @@ const unauthorizedErrorMessage = 'Необходима авторизация';
 const authorizedErrorMessage = 'Неправильные почта или пароль';
 const duplicateErrorMessage = 'Введенный вами адрес электронной почты уже зарегистрирован';
 const credentialsErrorMessage = 'Необходимо ввести пароль';
+const validationErrorMessage = 'Переданы некорректные данные';
 const serverErrorMessage = 'На сервере произошла ошибка';
 
 module.exports = {
@@ -23,5 +24,6 @@ module.exports = {
   authorizedErrorMessage,
   duplicateErrorMessage,
   credentialsErrorMessage,
+  validationErrorMessage,
   serverErrorMessage,
 };

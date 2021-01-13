@@ -1,10 +1,10 @@
-const { duplicateErrorMessage, serverErrorMessage } = require('../utils/constants');
+const { duplicateErrorMessage, serverErrorMessage, validationErrorMessage } = require('../utils/constants');
 
 module.exports = ((err, req, res, next) => {
   const { statusCode = 500, message } = err;
 
   if (err.name === 'CastError' || err.name === 'ValidationError') {
-    res.status(400).send({ message: err.message });
+    res.status(400).send({ message: validationErrorMessage });
     return;
   }
 

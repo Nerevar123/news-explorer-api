@@ -5,7 +5,7 @@ const { cryptHash } = require('../utils/crypt');
 const NotFoundError = require('../errors/not-found-error');
 const { JWT_SECRET, COOKIES_SECURE, COOKIES_SAMESITE } = require('../config');
 const {
-  notFoundUserErrorMessage, registrationOkMessage, loginOkMessage, logoutOkMessage,
+  notFoundUserErrorMessage, registrationOkMessage, logoutOkMessage,
 } = require('../utils/constants');
 
 module.exports.getUserInfo = (req, res, next) => {
@@ -43,7 +43,7 @@ module.exports.login = (req, res, next) => {
         secure: yn(COOKIES_SECURE),
         httpOnly: yn(COOKIES_SECURE),
       });
-      res.send({ message: loginOkMessage });
+      res.send({ jwt: token });
     })
     .catch(next);
 };
