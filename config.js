@@ -1,7 +1,7 @@
 const {
   PORT = 3000,
   JWT_SECRET = 'JWT_SECRET',
-  MONGO_URL = 'mongodb://localhost:27017/stoneflower',
+  MONGO_URL = 'mongodb://localhost:27017/news',
   COOKIES_SECURE = false,
   COOKIES_SAMESITE = 'Lax',
 } = process.env;

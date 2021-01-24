@@ -43,7 +43,7 @@ module.exports.login = (req, res, next) => {
         secure: yn(COOKIES_SECURE),
         httpOnly: yn(COOKIES_SECURE),
       });
-      res.send({ jwt: token });
+      res.send({ name: user.name, email: user.email });
     })
     .catch(next);
 };
