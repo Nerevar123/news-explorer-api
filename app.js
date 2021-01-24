@@ -12,7 +12,7 @@ const errorHandler = require('./middlewares/errorHandler');
 const routes = require('./routes');
 const { requestLogger, errorLogger } = require('./middlewares/logger');
 const {
-  PORT, MONGO_URL, rateLimitConfig, corsConfig,
+  PORT, MONGO_URL, rateLimitConfig,
 } = require('./config');
 
 const app = express();
@@ -26,7 +26,12 @@ mongoose.connect(MONGO_URL, {
 
 const limiter = rateLimit(rateLimitConfig);
 
-app.use(cors(corsConfig));
+// app.use(cors(corsConfig));
+
+app.use(cors({
+  origin: ['https://news.ner.works', 'http://news.ner.works', 'http://localhost:3000', 'http://127.0.0.1:3000'],
+  credentials: true,
+}));
 
 app.use(requestLogger);
 app.use(limiter);
