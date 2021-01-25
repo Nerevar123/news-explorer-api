@@ -4,14 +4,8 @@ const ForbiddenError = require('../errors/forbidden-error');
 const { notFoundPageErrorMessage, forbiddenErrorMessage } = require('../utils/constants');
 
 module.exports.getArticles = (req, res, next) => {
-  Article.find({})
-    .then((articles) => {
-      articles.filter((article) => {
-        if (article.owner.id === req.user.id) return article;
-        return null;
-      });
-      res.send(articles);
-    })
+  Article.find({ owner: req.user._id })
+    .then((articles) => res.send(articles))
     .catch(next);
 };
 
