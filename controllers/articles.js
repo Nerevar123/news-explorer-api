@@ -5,7 +5,13 @@ const { notFoundPageErrorMessage, forbiddenErrorMessage } = require('../utils/co
 
 module.exports.getArticles = (req, res, next) => {
   Article.find({})
-    .then((articles) => res.send(articles))
+    .then((articles) => {
+      articles.filter((article) => {
+        if (article.owner.id === req.user.id) return article;
+        return null;
+      });
+      res.send(articles);
+    })
     .catch(next);
 };
 
