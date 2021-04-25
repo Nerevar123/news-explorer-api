@@ -1,21 +1,15 @@
-# Проект "News Explorer" #
+# News Explorer API #
 
-Проект "News Explorer" - это поисковик новостей с возможностью регистрации.
+This repo is the custom API for News-Explorer, a news-searching React App. Proxy server/redirect is handled by NGINX and the Node server is run with PM2. The API was created with Express and Mongo stores user information.
 
-**Технологии**
+**Technologies**
 
-* JavaScript;
-* API;
-* Node JS;
-* Express;
+* React/Create React App
+* Node.js, NPM
+* REST-full API design
+* Express.js
+* JS, HTML, CSS
 
-**Ссылка на API**
+**Link to API**
 
 https://api.mesto.ner.works/
-
-
-**Change-log**
-
-_v1.0_
-
-Первая версия API.
